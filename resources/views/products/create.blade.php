@@ -1,46 +1,47 @@
-@extends('products.layout')
-  
-@section('content')
+<!DOCTYPE html>
+<html>
 
-<div class="card mt-5">
-  <h2 class="card-header">Add New Product</h2>
-  <div class="card-body">
+<head>
+    <title>Add Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-primary btn-sm" href="{{ route('products.index') }}"><i class="fa fa-arrow-left"></i> Back</a>
+<body>
+    <div class="container mt-5">
+        <h1>Add New Product</h1>
+        <a href="{{ route('products.index') }}" class="btn btn-primary mb-3">Back</a>
+
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <form action="{{ route('products.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label class="form-label">Name:</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Description:</label>
+                <textarea name="description" class="form-control" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Price:</label>
+                <input type="number" name="price" class="form-control" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Stock:</label>
+                <input type="number" name="stock" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
     </div>
+</body>
 
-    <form action="{{ route('products.store') }}" method="POST">
-        @csrf
-
-        <div class="mb-3">
-            <label for="inputName" class="form-label"><strong>Name:</strong></label>
-            <input 
-                type="text" 
-                name="name" 
-                class="form-control @error('name') is-invalid @enderror" 
-                id="inputName" 
-                placeholder="Name">
-            @error('name')
-                <div class="form-text text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="mb-3">
-            <label for="inputDetail" class="form-label"><strong>Detail:</strong></label>
-            <textarea 
-                class="form-control @error('detail') is-invalid @enderror" 
-                style="height:150px" 
-                name="detail" 
-                id="inputDetail" 
-                placeholder="Detail"></textarea>
-            @error('detail')
-                <div class="form-text text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-        <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Submit</button>
-    </form>
-
-  </div>
-</div>
-@endsection
+</html>
